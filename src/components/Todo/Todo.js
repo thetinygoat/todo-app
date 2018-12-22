@@ -5,8 +5,7 @@ const todo = (props) => {
     return (
         <div>
             <h3>{props.task}</h3>
-            <Controls type="delete" />
-            <Controls type="done" />
+            <Controls deleted={props.deleted} />
         </div>
     )
 }
