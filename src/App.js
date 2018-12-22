@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import axios from './axios';
+import Todo from './components/Todo/Todo';
 
 class App extends Component {
+
+  state = {
+    tasks: []
+  }
+
+  componentDidMount() {
+    axios.get('/todo.json')
+      .then(res => {
+        let newState = Object.keys(res.data).map(keys => {
+          return (res.data[keys]);
+        });
+        this.setState({
+          tasks: newState,
+        });
+      });
+  }
   render() {
+
+    let todo = this.state.tasks.map(task => {
+      return (
+        <Todo task={task.task} key={task.date} />
+      )
+    })
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        {todo}
       </div>
     );
   }
