@@ -4,6 +4,7 @@ import Todo from './components/Todo/Todo';
 import Spinner from './components/Spinner/Spinner';
 import NoTodos from './components/NoTodos/NoTodos';
 import Input from './components/Input/Input';
+import './App.css'
 
 class App extends Component {
 
@@ -107,12 +108,17 @@ class App extends Component {
 
     return (
 
-      <div className="App">
-        <Input
-          changed={this.handleChange}
-          submitted={this.handlesubmit}
-          value={this.state.value} />
-        {todos}
+      <div className="container has-text-centered">
+        <p className="is-size-1">TODO</p>
+        <div className="section">
+          <Input
+            changed={this.handleChange}
+            submitted={this.handlesubmit}
+            value={this.state.value} />
+          <div className="columns todos is-centered is-multiline is-2">
+            {todos}
+          </div>
+        </div>
       </div>
     );
   }

@@ -3,8 +3,8 @@ import Controls from './Controls/Controls';
 
 const todo = (props) => {
     return (
-        <div>
-            <h3>{props.task}</h3>
+        <div className="column notification is-warning is-one-quarter">
+            <p className="is-size-3">{props.task}</p>
             <Controls deleted={props.deleted} />
         </div>
     )
