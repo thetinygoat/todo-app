@@ -1,6 +1,12 @@
 import React from 'react';
 
 const input = (props) => {
+    let clname = null;
+    if (props.loading) {
+        clname = 'button is-link is-fullwidth is-loading';
+    } else {
+        clname = 'button is-link is-fullwidth';
+    }
     return (
         <section className="hero">
             <form onSubmit={props.submitted}>
@@ -19,7 +25,7 @@ const input = (props) => {
                     </div>
                     <div className="column is-one-fifth">
                         <div>
-                            <button className="button is-link is-fullwidth">Add</button>
+                            <button className={clname}>Add</button>
                         </div>
                     </div>
                 </div>

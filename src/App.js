@@ -12,7 +12,8 @@ class App extends Component {
     tasks: [],
     loading: true,
     isEmpty: false,
-    value: ''
+    value: '',
+    buttonLoading: false
   }
 
   getRandomInt(min, max) {
@@ -43,11 +44,16 @@ class App extends Component {
 
   handlesubmit = (e) => {
     e.preventDefault();
+    if (this.state.value.trim() === '') {
+      alert('todo cannot be empty!');
+      return;
+    }
     let post = {
       task: this.state.value,
       done: false,
       date: Date.now()
     }
+    this.setState({ buttonLoading: true })
     axios.post('/todo.json', post)
       .then(res => {
         let newTasks = [...this.state.tasks];
@@ -59,7 +65,8 @@ class App extends Component {
         this.setState({
           tasks: newTasks,
           value: '',
-          isEmpty: false
+          isEmpty: false,
+          buttonLoading: false
         })
       })
       .catch(err => {
@@ -116,12 +123,13 @@ class App extends Component {
     return (
 
       <div className="container has-text-centered">
-        <p className="is-size-1">TODO</p>
+        <p className="is-size-1"><i className="fas fa-check-double"></i> TODO</p>
         <div className="section">
           <Input
             changed={this.handleChange}
             submitted={this.handlesubmit}
-            value={this.state.value} />
+            value={this.state.value}
+            loading={this.state.buttonLoading} />
           <div className="columns todos is-centered is-multiline is-2">
             {todos}
           </div>
