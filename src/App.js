@@ -11,8 +11,7 @@ class App extends Component {
     tasks: [],
     loading: true,
     isEmpty: false,
-    value: '',
-    task: ''
+    value: ''
   }
 
   componentDidMount() {
@@ -24,8 +23,8 @@ class App extends Component {
             isEmpty: true
           })
         } else {
-          let newState = Object.keys(res.data).map(keys => {
-            return (res.data[keys]);
+          let newState = Object.keys(res.data).map(key => {
+            return Object.assign(res.data[key], { id: key });
           });
           this.setState({
             tasks: newState,
@@ -33,16 +32,32 @@ class App extends Component {
           });
         }
       });
-
-    // axios.post('/todo.json', {
-    //   "task": 'hello world',
-    //   done: false
-    // })
-
   }
 
   handlesubmit = (e) => {
     e.preventDefault();
+    let post = {
+      task: this.state.value,
+      done: false,
+      date: Date.now()
+    }
+    axios.post('/todo.json', post)
+      .then(res => {
+        let newTasks = [...this.state.tasks];
+        let newPost = {
+          ...post,
+          id: res.data.name
+        }
+        newTasks.push(newPost);
+        this.setState({
+          tasks: newTasks,
+          value: '',
+          isEmpty: false
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   handleChange = (e) => {
@@ -51,12 +66,35 @@ class App extends Component {
     })
   }
 
+  handleDelete = (id) => {
+
+    axios.delete(`/todo/${id}.json`)
+      .then(res => {
+        let newTasks = this.state.tasks.filter(task => {
+          return task.id !== id;
+        })
+        let isEmpty = false;
+        if (newTasks.length === 0) {
+          isEmpty = true;
+        }
+        this.setState({
+          tasks: newTasks,
+          isEmpty: isEmpty
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 
   render() {
     let todos = null;
     let todo = this.state.tasks.map(task => {
       return (
-        <Todo task={task.task} key={task.date} />
+        <Todo
+          task={task.task}
+          key={task.id}
+          deleted={() => this.handleDelete(task.id)} />
       )
     });
     if (this.state.loading) {
@@ -70,8 +108,10 @@ class App extends Component {
     return (
 
       <div className="App">
-        <Input changed={this.handleChange} submitted={this.handlesubmit} value={this.state.value} />
-        {this.state.value}
+        <Input
+          changed={this.handleChange}
+          submitted={this.handlesubmit}
+          value={this.state.value} />
         {todos}
       </div>
     );
