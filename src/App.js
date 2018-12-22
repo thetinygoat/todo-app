@@ -3,13 +3,16 @@ import axios from './axios';
 import Todo from './components/Todo/Todo';
 import Spinner from './components/Spinner/Spinner';
 import NoTodos from './components/NoTodos/NoTodos';
+import Input from './components/Input/Input';
 
 class App extends Component {
 
   state = {
     tasks: [],
     loading: true,
-    isEmpty: false
+    isEmpty: false,
+    value: '',
+    task: ''
   }
 
   componentDidMount() {
@@ -37,6 +40,18 @@ class App extends Component {
     // })
 
   }
+
+  handlesubmit = (e) => {
+    e.preventDefault();
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      value: e.target.value
+    })
+  }
+
+
   render() {
     let todos = null;
     let todo = this.state.tasks.map(task => {
@@ -55,6 +70,8 @@ class App extends Component {
     return (
 
       <div className="App">
+        <Input changed={this.handleChange} submitted={this.handlesubmit} value={this.state.value} />
+        {this.state.value}
         {todos}
       </div>
     );
