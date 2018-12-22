@@ -4,7 +4,7 @@ import Todo from './components/Todo/Todo';
 import Spinner from './components/Spinner/Spinner';
 import NoTodos from './components/NoTodos/NoTodos';
 import Input from './components/Input/Input';
-import './App.css'
+import './App.css';
 
 class App extends Component {
 
@@ -13,6 +13,12 @@ class App extends Component {
     loading: true,
     isEmpty: false,
     value: ''
+  }
+
+  getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   componentDidMount() {
@@ -95,7 +101,8 @@ class App extends Component {
         <Todo
           task={task.task}
           key={task.id}
-          deleted={() => this.handleDelete(task.id)} />
+          deleted={() => this.handleDelete(task.id)}
+          color={this.getRandomInt(1, 6)} />
       )
     });
     if (this.state.loading) {

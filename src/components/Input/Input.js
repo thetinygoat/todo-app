@@ -13,7 +13,7 @@ const input = (props) => {
                                     placeholder="What are you upto?"
                                     onChange={props.changed}
                                     value={props.value}
-                                    className="input is-primary" />
+                                    className="input is-link" />
                             </div>
                         </div>
                     </div>
